@@ -13,8 +13,9 @@ HISTCONTROL=ignoreboth
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=5000
-HISTFILESIZE=2000
+HISTSIZE=50000
+HISTFILESIZE=20000
+export HISTTIMEFORMAT="%F %T "
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -226,51 +227,31 @@ else \
   echo " '$IYellow$PathShort$Color_Off'\$ "; \
 fi)'
 
-
 export PATH=$PATH:\
-/home/poirel/src/ateam-code/src/python/descriptive-stats:\
-/home/poirel/src/ateam-code/src/python/hydrogen:\
-/home/poirel/src/ateam-code/src/python/ras-posting:\
-/home/poirel/src/ateam-code/src/python/scripts:\
-/home/poirel/src/ateam-code/src/python/utils:\
-/home/poirel/src/reveal-parameters/scripts:\
-/home/poirel/src/reveal-csv-validator
+"$HOME/.local/bin"
 
-export PYTHONPATH=$PYTHONPATH:\
-/home/poirel/src/ateam-code/src/python/utils:\
-/home/poirel/src/ateam-code/src/python/ras-posting
+export PYTHONPATH=$PYTHONPATH
 
 # custom places to jump
 alias ateam-python='cd /home/poirel/src/ateam-code/src/python'
-alias dataviz='cd /home/poirel/src/data-visualization-apps/proj'
-alias decision='cd /home/poirel/src/ateam-code/src/python/random-forest'
-alias descr-stats='cd /home/poirel/src/ateam-code/src/python/descriptive-stats'
-alias hydrogen='cd /home/poirel/src/ateam-code/src/python/hydrogen'
-alias netviz='cd /home/poirel/src/data-visualization-apps/proj/netviz'
-alias newwords='cd /home/poirel/src/ateam-code/src/python/new-words'
-alias research-and-dev='cd /home/poirel/src/research-and-development'
 alias mds='cd /home/poirel/src/master-data-service'
 alias etle='cd /home/poirel/src/etle'
 
 # automatic completion for aws CLI
 complete -C aws_completer aws
 
-
 # RedOwl
-export MAVEN_OPTS="-Xmx8192m -XX:PermSize=256m -XX:MaxPermSize=512m"
-
-export GOPATH=$HOME/go-packages
-export PATH=$PATH:$GOPATH/bin
-
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
-export JDK_HOME="/usr/lib/jvm/java-7-oracle"
-
 alias irb="bundle exec rails console"
 export HADOOP_HOME=/home/poirel/src/hadoop-0.20.2-cdh3u5
+alias mcid='mvn clean install -DskipTests'
+
+export MAVEN_OPTS="-Xmx4096m -XX:PermSize=256m -XX:MaxPermSize=512m"
+export JAVA_HOME="/usr/lib/jvm/java-7-openjdk-amd64/"
 
 # external sourced files
-source $HOME/reveal-presentation.sh
-
-alias mcid='mvn clean install -DskipTests'
+if [ -f ~/reveal-presentation.sh ]; then
+    source ~/reveal-presentation.sh
+fi
