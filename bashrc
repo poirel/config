@@ -232,10 +232,16 @@ export PATH=$PATH:\
 
 export PYTHONPATH=$PYTHONPATH
 
-# custom places to jump
+# aliases
 alias ateam-python='cd /home/poirel/src/ateam-code/src/python'
-alias mds='cd /home/poirel/src/master-data-service'
 alias etle='cd /home/poirel/src/etle'
+alias mcid='mvn clean install -DskipTests'
+alias licecap='wine ~/.wine/drive_c/Program\ Files\ \(x86\)/LICEcap/licecap.exe'
+
+# MDS aliases
+alias mds='cd /home/poirel/src/master-data-service'
+alias mds-run='mds; java -jar $(find reference-data-service/target -name "reference-data-service-*.jar" | grep -v sources) server my-config.yml'
+alias mds-build-and-run='mds; echo "Building MDS..."; mcid >/dev/null; if [[ "$?" -eq "0" ]]; then echo "Build Success! Starting MDS..."; else echo "Failed to build. Whaddup with that?!"; return; fi; mds-run'
 
 # automatic completion for aws CLI
 complete -C aws_completer aws
@@ -246,7 +252,7 @@ eval "$(rbenv init -)"
 
 alias irb="bundle exec rails console"
 export HADOOP_HOME=/home/poirel/src/hadoop-0.20.2-cdh3u5
-alias mcid='mvn clean install -DskipTests'
+
 
 export MAVEN_OPTS="-Xmx4096m -XX:PermSize=256m -XX:MaxPermSize=512m"
 export JAVA_HOME="/usr/lib/jvm/java-7-openjdk-amd64/"
