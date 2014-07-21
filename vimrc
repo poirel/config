@@ -22,7 +22,7 @@ set hlsearch
 
 autocmd Filetype python set tabstop=4|set shiftwidth=4|set autoindent
 autocmd Filetype tex set tabstop=2|set shiftwidth=2|set autoindent|set spell
-autocmd Filetype html set tabstop=2|set shiftwidth=2|set autoindent 
+autocmd Filetype html set tabstop=2|set shiftwidth=2|set autoindent
 
 filetype plugin on
 filetype plugin indent on
@@ -40,7 +40,7 @@ endif
 
 map <C-n> :NERDTreeToggle<CR>
 "nmap <C-S-V> "+gP
-"imap <C-S-V> <ESC><C-S-V>a 
+"imap <C-S-V> <ESC><C-S-V>a
 "vmap <C-S-C> "+y
 
 
