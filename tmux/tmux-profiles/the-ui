@@ -6,7 +6,8 @@ splitw -h -p 60
 # send commands to each split
 send-keys -t 2 'the-ui; ll' enter
 send-keys -t 2 'git status' enter
-send-keys -t 1 'the-ui; redis-server &; cd client; grunt develop --livereload=true' enter
+send-keys -t 1 'the-ui; redis-server &' enter
+send-keys -t 1 'cd client; grunt develop --livereload=true' enter
 send-keys -t 0 'the-ui; cd server; nodemon web.coffee' enter
 
 # set the pane i want to start in
