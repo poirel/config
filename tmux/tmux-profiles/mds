@@ -1,10 +1,8 @@
 # set up splits
 selectp -t 0
-splitw -v -p 25
 
 # send commands to each split
-send-keys -t 0 'mds-run' enter
-send-keys -t 1 'mds && git status' enter
+send-keys -t 0 'mds && git status' enter
 
 # set the pane i want to start in
-selectp -t 1
+selectp -t 0

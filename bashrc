@@ -83,9 +83,8 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 # some more ls aliases
-alias ll='ls -alF --group-directories-first'
+alias ll='ls -l --group-directories-first'
 alias la='ls -A --group-directories-first'
-alias l='ls -CF --group-directories-first'
 
 alias less='less -X'
 
@@ -230,11 +229,12 @@ fi)'
 export PATH=$PATH:\
 "$HOME/.local/bin"
 
-export PYTHONPATH=$PYTHONPATH
+export PYTHONPATH=$PYTHONPATH:\
+$HOME/src/master-data-service/misc/python:\
+$HOME/src/research-and-development/raytheon-publish/python
 
 # aliases
 alias ateam-python='cd /home/poirel/src/ateam-code/src/python'
-alias etle='cd /home/poirel/src/etle'
 alias mcid='mvn clean install -DskipTests'
 alias licecap='wine ~/.wine/drive_c/Program\ Files\ \(x86\)/LICEcap/licecap.exe'
 
@@ -243,21 +243,52 @@ alias licecap='wine ~/.wine/drive_c/Program\ Files\ \(x86\)/LICEcap/licecap.exe'
 complete -C aws_completer aws
 
 # RedOwl
-export PATH="$HOME/.rbenv/bin:$PATH"
+export PATH=$HOME/.rbenv/bin:\
+$HOME/src/ateam-code/src/python/scripts:\
+$PATH
 eval "$(rbenv init -)"
+
 
 alias the-ui='cd /home/poirel/src/the-ui'
 
 alias mds='cd /home/poirel/src/master-data-service'
-alias mds-run='mds; java -jar $(find reference-data-service/target -name "reference-data-service-*.jar" | grep -v sources) server my-config.yml'
-alias mds-build-and-run='mds; echo "Building MDS..."; mcid >/dev/null; if [[ "$?" -eq "0" ]]; then echo "Build Success! Starting MDS..."; else echo "Failed to build. Whaddup with that?!"; return; fi; mds-run'
+alias mdsrun='mds && java -Xms256m -Xmx2048m -XX:PermSize=512m -cp $(find reference-data-service/target -name "reference-data-service-*.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server my-config.yml'
+alias mdsdebug='mds && java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Xms256m -Xmx2048m -XX:PermSize=512m -cp $(find reference-data-service/target -name "reference-data-service-*.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server my-config.yml'
+alias mdsbuild='mds && mcid'
+alias mdsbuild-and-run='mdsbuild && mdsrun'
+alias mdstest='mds && mvn clean install -Dtestng.excludedGroups=UnderDevelopment,RemoteHadoop'
+
+alias etle='cd /home/poirel/src/etle'
+alias etle-build='etle && mcid'
+alias etle-test='etle && mvn clean install -Dtestng.excludedGroups=UnderDevelopment,Load'
+
+alias r-and-d='cd /home/poirel/src/research-and-development'
 
 export HADOOP_HOME=/home/poirel/src/hadoop-0.20.2-cdh3u5
 
-export MAVEN_OPTS="-Xmx4096m -XX:PermSize=256m -XX:MaxPermSize=512m"
-export JAVA_HOME="/usr/lib/jvm/java-7-openjdk-amd64/"
+export JAVA_OPTS="-Xmx4096m -Xms2048m"
+export MAVEN_OPTS="-Xmx4096m -Xms2048m"
+
+#export JAVA_HOME="/usr/lib/jvm/java-7-openjdk-amd64/"
+export JAVA_HOME="/usr/lib/jvm/java-8-oracle/"
+export PATH=$JAVA_HOME/bin:$PATH
 
 # external sourced files
 if [ -f ~/reveal-presentation.sh ]; then
     source ~/reveal-presentation.sh
 fi
+
+export GROOVY_HOME="/home/poirel/.gvm/groovy/2.3.5/"
+
+export NVM_DIR="/home/poirel/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
+export PATH=$PATH:$NVM_DIR/current/bin
+
+export ORACLE_HOME=/usr/lib/oracle/12.1/client64
+export LD_LIBRARY_PATH=$ORACLE_HOME/lib
+
+# pyenv environment variables
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
