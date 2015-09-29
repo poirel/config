@@ -252,15 +252,17 @@ eval "$(rbenv init -)"
 alias the-ui='cd /home/poirel/src/the-ui'
 
 alias mds='cd /home/poirel/src/master-data-service'
-alias mdsrun='mds && java -Xms256m -Xmx2048m -XX:PermSize=512m -cp $(find reference-data-service/target -name "reference-data-service-*.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server my-config.yml'
-alias mdsdebug='mds && java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Xms256m -Xmx2048m -XX:PermSize=512m -cp $(find reference-data-service/target -name "reference-data-service-*.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server my-config.yml'
+alias mdsrun='mds && java -Xms256m -Xmx2048m -XX:PermSize=512m -cp $(find reference-data-service/target -name "reference-data-service-*.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server ~/mds-target/my-config.yml'
+alias mdsdebug='mds && java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Xms256m -Xmx2048m -XX:PermSize=512m -cp $(find reference-data-service/target -name "reference-data-service-*.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server ~/mds-target/my-config.yml'
 alias mdsbuild='mds && mcid'
 alias mdsbuild-and-run='mdsbuild && mdsrun'
-alias mdstest='mds && mvn clean install -Dtestng.excludedGroups=UnderDevelopment,RemoteHadoop'
+alias mdstest='mds && mvn clean install -Dtestng.excludedGroups=UnderDevelopment,AWSAccess,RequiresInternetConnectivity -DforkMode=always'
 
 alias etle='cd /home/poirel/src/etle'
 alias etle-build='etle && mcid'
 alias etle-test='etle && mvn clean install -Dtestng.excludedGroups=UnderDevelopment,Load'
+
+alias reveal-common='cd /home/poirel/src/reveal-common'
 
 alias r-and-d='cd /home/poirel/src/research-and-development'
 

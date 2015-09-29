@@ -4,11 +4,11 @@ splitw -v -p 80
 splitw -h -p 71
 
 # send commands to each split
-send-keys -t 2 'the-ui; ll' enter
-send-keys -t 2 'git status' enter
-send-keys -t 1 'the-ui; redis-server &' enter
-send-keys -t 1 'cd client; npm run server' enter
-send-keys -t 0 'the-ui; cd server; nodemon web.coffee' enter
+send-keys -t 2 'the-ui && ll' enter
+send-keys -t 2 'the-ui && git status' enter
+send-keys -t 1 'the-ui && redis-server &' enter
+send-keys -t 1 'the-ui && cd client && npm run server' enter
+send-keys -t 0 'the-ui && cd server && nodemon web.coffee' enter
 
 # set the pane i want to start in
 selectp -t 2
