@@ -1,5 +1,8 @@
 execute pathogen#infect()
 
+filetype plugin on
+filetype plugin indent on
+
 nmap <F1> nop
 set bg=dark
 set ignorecase
@@ -20,12 +23,6 @@ set viminfo='10,\"100,:20,%,n~/.viminfo
 $"|endif|endif
 set hlsearch
 
-autocmd Filetype python set tabstop=4|set shiftwidth=4|set autoindent
-autocmd Filetype tex set tabstop=2|set shiftwidth=2|set autoindent|set spell
-autocmd Filetype html set tabstop=2|set shiftwidth=2|set autoindent
-
-filetype plugin on
-filetype plugin indent on
 
 if has('gui_running')
   colorscheme torte

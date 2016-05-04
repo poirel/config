@@ -233,11 +233,7 @@ export PYTHONPATH=$PYTHONPATH:\
 $HOME/src/master-data-service/misc/python:\
 $HOME/src/research-and-development/raytheon-publish/python
 
-# aliases
-alias ateam-python='cd /home/poirel/src/ateam-code/src/python'
-alias mcid='mvn clean install -DskipTests'
 alias licecap='wine ~/.wine/drive_c/Program\ Files\ \(x86\)/LICEcap/licecap.exe'
-
 
 # automatic completion for aws CLI
 complete -C aws_completer aws
@@ -249,27 +245,36 @@ $PATH
 eval "$(rbenv init -)"
 
 
+# Reveal sourcecode aliases
+alias mcid='mvn clean install -DskipTests'
+#alias mcit='mvn --update-snapshots -DforkCount=1 -DreuseForks=false -Dtestng.excludedGroups=UnderDevelopment,RemoteHadoop,AWSAccess,RequiresInternetConnectivity clean install'
+alias mcit='mvn clean install -Dtestng.excludedGroups=UnderDevelopment,RemoteHadoop,AWSAccess,RequiresInternetConnectivity'
+alias old-mcit='mvn clean install -DforkMode=always -Dtestng.excludedGroups=UnderDevelopment,RemoteHadoop,AWSAccess,RequiresInternetConnectivity'
+
 alias the-ui='cd /home/poirel/src/the-ui'
 
 alias mds='cd /home/poirel/src/master-data-service'
-alias mdsrun='mds && java -Xms256m -Xmx2048m -XX:PermSize=512m -cp $(find reference-data-service/target -name "reference-data-service-*.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server ~/mds-target/my-config.yml'
-alias mdsdebug='mds && java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Xms256m -Xmx2048m -XX:PermSize=512m -cp $(find reference-data-service/target -name "reference-data-service-*.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server ~/mds-target/my-config.yml'
-alias mdsbuild='mds && mcid'
-alias mdsbuild-and-run='mdsbuild && mdsrun'
-alias mdstest='mds && mvn clean install -Dtestng.excludedGroups=UnderDevelopment,AWSAccess,RequiresInternetConnectivity -DforkMode=always'
+alias mdsrun='mds && java -Xms256m -Xmx2048m -cp $(find reference-data-service/target -name "reference-data-service-*.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server ~/my-config/mds-server-config.yml'
+alias mdsdebug='mds && java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Xms256m -Xmx2048m -XX:PermSize=512m -cp $(find reference-data-service/target -name "reference-data-service-*.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server ~/my-config/mds-server-config.yml'
+alias mdstest='mds && mvn clean install -Dtestng.excludedGroups=UnderDevelopment -DforkMode=always'
 
 alias etle='cd /home/poirel/src/etle'
 alias etle-build='etle && mcid'
 alias etle-test='etle && mvn clean install -Dtestng.excludedGroups=UnderDevelopment,Load'
 
 alias reveal-common='cd /home/poirel/src/reveal-common'
+alias reveal-common-build='reveal-common && mcid'
 
-alias r-and-d='cd /home/poirel/src/research-and-development'
+alias cb-integ='cd /home/poirel/src/research-and-development/carbon-black-connector/src'
+
+alias quantum='cd /home/poirel/src/research-and-development/quantum-poc/ingest'
+
+export PATH=$PATH:$HOME/.tmux
 
 export HADOOP_HOME=/home/poirel/src/hadoop-0.20.2-cdh3u5
 
-export JAVA_OPTS="-Xmx4096m -Xms2048m"
-export MAVEN_OPTS="-Xmx4096m -Xms2048m"
+#export JAVA_OPTS="-Xms2048m -Xms4096m"
+#export MAVEN_OPTS="-Xms2048m -Xms4096m"
 
 #export JAVA_HOME="/usr/lib/jvm/java-7-openjdk-amd64/"
 export JAVA_HOME="/usr/lib/jvm/java-8-oracle/"
@@ -287,10 +292,7 @@ export NVM_DIR="/home/poirel/.nvm"
 
 export PATH=$PATH:$NVM_DIR/current/bin
 
+export PATH=$PATH:"/home/poirel/src/reveal-common/util"
+
 export ORACLE_HOME=/usr/lib/oracle/12.1/client64
 export LD_LIBRARY_PATH=$ORACLE_HOME/lib
-
-# pyenv environment variables
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
