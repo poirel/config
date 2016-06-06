@@ -233,6 +233,7 @@ export PYTHONPATH=$PYTHONPATH:\
 $HOME/src/master-data-service/misc/python:\
 $HOME/src/research-and-development/raytheon-publish/python
 
+
 alias licecap='wine ~/.wine/drive_c/Program\ Files\ \(x86\)/LICEcap/licecap.exe'
 
 # automatic completion for aws CLI
@@ -247,8 +248,8 @@ eval "$(rbenv init -)"
 
 # Reveal sourcecode aliases
 alias mcid='mvn clean install -DskipTests'
-#alias mcit='mvn --update-snapshots -DforkCount=1 -DreuseForks=false -Dtestng.excludedGroups=UnderDevelopment,RemoteHadoop,AWSAccess,RequiresInternetConnectivity clean install'
-alias mcit='mvn clean install -Dtestng.excludedGroups=UnderDevelopment,RemoteHadoop,AWSAccess,RequiresInternetConnectivity'
+alias mcit='mvn --update-snapshots -DforkCount=1 -DreuseForks=false -Dtestng.excludedGroups=UnderDevelopment,RemoteHadoop,AWSAccess,RequiresInternetConnectivity clean install'
+#alias mcit='mvn clean install -Dtestng.excludedGroups=UnderDevelopment,RemoteHadoop,AWSAccess,RequiresInternetConnectivity'
 alias old-mcit='mvn clean install -DforkMode=always -Dtestng.excludedGroups=UnderDevelopment,RemoteHadoop,AWSAccess,RequiresInternetConnectivity'
 
 alias the-ui='cd /home/poirel/src/the-ui'
@@ -256,7 +257,7 @@ alias the-ui='cd /home/poirel/src/the-ui'
 alias mds='cd /home/poirel/src/master-data-service'
 alias mdsrun='mds && java -Xms256m -Xmx2048m -cp $(find reference-data-service/target -name "reference-data-service-*.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server ~/my-config/mds-server-config.yml'
 alias mdsdebug='mds && java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Xms256m -Xmx2048m -XX:PermSize=512m -cp $(find reference-data-service/target -name "reference-data-service-*.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server ~/my-config/mds-server-config.yml'
-alias mdstest='mds && mvn clean install -Dtestng.excludedGroups=UnderDevelopment -DforkMode=always'
+alias mdstest='mds && mvn clean install -Dtestng.excludedGroups=UnderDevelopment,RemoteHadoop,AWSAccess,RequiresInternetConnectivity -DforkMode=always'
 
 alias etle='cd /home/poirel/src/etle'
 alias etle-build='etle && mcid'
