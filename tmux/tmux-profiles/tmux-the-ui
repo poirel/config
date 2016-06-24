@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# main window in the repo
+tmux new-session -d -n 'the-ui'
+tmux send-keys 'the-ui && git status' enter
+tmux send-keys 'the-ui && ll' enter
+
+# window running node server
+tmux new-window -n 'ui logs'
+tmux send-keys 'the-ui && cd client && nvm use && npm run server' enter
+tmux splitw -v -p 66
+tmux send-keys 'the-ui && cd server && nvm use && nodemon web.coffee' enter
+tmux splitw -v -p 50
+tmux send-keys 'the-ui && redis-server &' enter
+tmux send-keys 'the-ui && redis-cli monitor' enter
+
+# set where we want to be on startup
+tmux select-window -t 0
+
+# required to attach everything
+tmux -2 attach-session -d

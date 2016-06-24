@@ -1,0 +1,30 @@
+# set up splits
+selectp -t 0
+splitw -v -p 80
+splitw -v -p 75
+splitw -v -p 66
+splitw -v -p 50
+
+# send commands to each split
+
+
+send-keys -t 0 'ssh develop-nat-black' enter
+send-keys -t 1 'ssh develop-nat-black' enter
+send-keys -t 2 'ssh develop-nat-black' enter
+send-keys -t 3 'ssh develop-nat-black' enter
+send-keys -t 4 'ssh develop-nat-black' enter
+
+send-keys -t 0 'ssh mds-black-1' enter
+send-keys -t 1 'ssh mds-black-2' enter
+send-keys -t 2 'ssh mds-black-3' enter
+send-keys -t 3 'ssh mds-black-4' enter
+send-keys -t 4 'ssh mds-black-5' enter
+
+send-keys -t 0 'sudo tailf /var/log/mds-server/mds-server.out' enter
+send-keys -t 1 'sudo tailf /var/log/mds-server/mds-server.out' enter
+send-keys -t 2 'sudo tailf /var/log/mds-server/mds-server.out' enter
+send-keys -t 3 'sudo tailf /var/log/mds-server/mds-server.out' enter
+send-keys -t 4 'sudo tailf /var/log/mds-server/mds-server.out' enter
+
+# set the pane i want to start in
+selectp -t 0

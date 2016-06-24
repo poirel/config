@@ -1,0 +1,37 @@
+#!/bin/bash
+
+log_dir='/home/poirel/.reveal-common/log'
+# make the log directory if it doesn't exist
+mkdir -p $log_dir
+
+# various log files we want to tail
+reveal_public_log='reveal-public-api.log'
+reveal_conversion_log='reveal-conversion.log'
+reveal_queue_worker_log='reveal-queue-worker.log'
+logstash_log='logstash-elastic-queue.log'
+
+# main window running the pipeline
+tmux new-session -d -n 'running pipeline'
+tmux send-keys 'reveal-common' enter
+tmux send-keys 'git status' enter
+tmux splitw -v -p 40
+tmux send-keys 'reveal-common' enter
+
+# window to tail public api logs
+tmux new-window -n 'streaming logs'
+tmux send-keys "cd $log_dir && touch $reveal_public_log && tailf -n 1 $reveal_public_log" enter
+tmux splitw -v -p 66
+tmux send-keys "cd $log_dir && touch $reveal_conversion_log && tailf -n 1 $reveal_conversion_log" enter
+tmux splitw -v -p 50
+tmux send-keys "cd $log_dir && touch $reveal_queue_worker_log && tailf -n 1 $reveal_queue_worker_log" enter
+
+# window to tail logstash logs
+tmux new-window -n 'logstash log'
+tmux send-keys "cd $log_dir && touch $logstash_log && tailf -n 1 $logstash_log" enter
+
+# set where we want to be on startup
+tmux select-window -t 0
+tmux select-pane -t 0
+
+# required to attach everything
+tmux -2 attach-session -d

@@ -1,0 +1,18 @@
+#!/bin/bash
+
+log_dir='/home/poirel/.reveal-common/log'
+# make the log directory if it doesn't exist
+mkdir -p $log_dir
+
+# main window running the pipeline
+tmux new-session -d -n 'mds'
+tmux send-keys 'mds && ls && git status' enter
+tmux splitw -v -p 40
+tmux send-keys 'mds && ls' enter
+
+# set where we want to be on startup
+tmux select-window -t 0
+tmux select-pane -t 0
+
+# required to attach everything
+tmux -2 attach-session -d
