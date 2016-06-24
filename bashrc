@@ -246,6 +246,11 @@ $PATH
 eval "$(rbenv init -)"
 
 
+alias nifi-start='/home/poirel/.local/src/nifi-0.6.1/bin/nifi.sh start'
+alias nifi-stop='/home/poirel/.local/src/nifi-0.6.1/bin/nifi.sh stop'
+alias nifi-log='tail -f /home/poirel/.local/src/nifi-0.6.1/logs/nifi-app.log'
+
+
 # Reveal sourcecode aliases
 alias mcid='mvn clean install -DskipTests'
 alias mcit='mvn --update-snapshots -DforkCount=1 -DreuseForks=false -Dtestng.excludedGroups=UnderDevelopment,RemoteHadoop,AWSAccess,RequiresInternetConnectivity clean install'
