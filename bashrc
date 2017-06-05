@@ -241,55 +241,67 @@ complete -C aws_completer aws
 
 # RedOwl
 export PATH=$HOME/.rbenv/bin:\
+$HOME/.rbenv/plugins/ruby-build/bin:\
 $HOME/src/ateam-code/src/python/scripts:\
 $PATH
 eval "$(rbenv init -)"
 
 
-alias nifi-start='/home/poirel/.local/src/nifi-0.6.1/bin/nifi.sh start'
-alias nifi-stop='/home/poirel/.local/src/nifi-0.6.1/bin/nifi.sh stop'
-alias nifi-log='tail -f /home/poirel/.local/src/nifi-0.6.1/logs/nifi-app.log'
+alias nifi-start='/home/poirel/.local/src/HDF-1.2.0.1-1/nifi/bin/nifi.sh start'
+alias nifi-stop='/home/poirel/.local/src/HDF-1.2.0.1-1/nifi/bin/nifi.sh stop'
+alias nifi-log='tail -f /home/poirel/.local/src/HDF-1.2.0.1-1/nifi/logs/nifi-app.log'
 
+# Dynamically sets up output directories for Elasticsearch, when run from the command line.
+# See the appropriate elasticsearch.yml file for details. Also used by ro-schema-ensure below.
+export ELASTICSEARCH_CLUSTER_NAME="clp"
 
 # Reveal sourcecode aliases
-alias mcid='mvn clean install -DskipTests'
+alias mcid='mvn clean install -DskipTests -Pdocs'
 alias mcit='mvn --update-snapshots -DforkCount=1 -DreuseForks=false -Dtestng.excludedGroups=UnderDevelopment,RemoteHadoop,AWSAccess,RequiresInternetConnectivity clean install'
 #alias mcit='mvn clean install -Dtestng.excludedGroups=UnderDevelopment,RemoteHadoop,AWSAccess,RequiresInternetConnectivity'
 alias old-mcit='mvn clean install -DforkMode=always -Dtestng.excludedGroups=UnderDevelopment,RemoteHadoop,AWSAccess,RequiresInternetConnectivity'
 
 alias the-ui='cd /home/poirel/src/the-ui'
 
-alias mds='cd /home/poirel/src/master-data-service'
-alias mdsrun='mds && java -Xms256m -Xmx2048m -cp $(find reference-data-service/target -name "reference-data-service-*.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server ~/my-config/mds-server-config.yml'
-alias mdsdebug='mds && java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Xms256m -Xmx2048m -XX:PermSize=512m -cp $(find reference-data-service/target -name "reference-data-service-*.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server ~/my-config/mds-server-config.yml'
-alias mdstest='mds && mvn clean install -Dtestng.excludedGroups=UnderDevelopment,RemoteHadoop,AWSAccess,RequiresInternetConnectivity -DforkMode=always'
+# ro-schema
+alias ro-schema-ensure='cd ~/src/reveal-common && java -jar $(find reveal-schema-cli/target -name "reveal-schema-cli-*-uberjar.jar") ensure --cluster clp --host localhost'
 
+# MDS Aliases
+alias mds='cd /home/poirel/src/master-data-service'
+# 2.13.6
+alias mdsrun-2.13.6='mds && java -Xms256m -Xmx2048m -cp $(find reference-data-service/target -name "reference-data-service-*.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server ~/my-config/mds-server-config_2.13.6.yml'
+alias mdsdebug-2.13.6='mds && java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Xms256m -Xmx2048m -XX:PermSize=512m -cp $(find reference-data-service/target -name "reference-data-service-*.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server ~/my-config/mds-server-config_2.13.6.yml'
+# 2.15.1
+alias mdsrun-2.15.1='mds && java -Xms256m -Xmx2048m -cp $(find reference-data-service/target -name "reference-data-service-*.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server ~/my-config/mds-server-config_2.15.1.yml'
+alias mdsdebug-2.15.1='mds && java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Xms256m -Xmx2048m -XX:PermSize=512m -cp $(find reference-data-service/target -name "reference-data-service-*.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server ~/my-config/mds-server-config_2.15.1.yml'
+# 2.50.0
+alias mdsrun-2.50.0='mds && java -Xms256m -Xmx2048m -cp $(find reference-data-service/target -name "reference-data-service-*-uberjar.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server ~/my-config/mds-server-config_2.50.0.yml'
+alias mdsdebug-2.50.0='mds && java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Xms256m -Xmx2048m -XX:PermSize=512m -cp $(find reference-data-service/target -name "reference-data-service-*-uberjar.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server ~/my-config/mds-server-config_2.50.0.yml'
+alias mdstest-2.50.0='mds && mvn clean install -Dtestng.excludedGroups=UnderDevelopment,RemoteHadoop,AWSAccess,RequiresInternetConnectivity -DforkMode=always'
+# 2.50.0
+alias mdsrun-2.50.1='mds && java -Xms256m -Xmx2048m -cp $(find reference-data-service/target -name "reference-data-service-*-uberjar.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server ~/my-config/mds-server-config_2.50.1.yml'
+alias mdsdebug-2.50.1='mds && java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Xms256m -Xmx2048m -XX:PermSize=512m -cp $(find reference-data-service/target -name "reference-data-service-*-uberjar.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server ~/my-config/mds-server-config_2.50.1.yml'
+alias mdstest-2.50.1='mds && mvn clean install -Dtestng.excludedGroups=UnderDevelopment,RemoteHadoop,AWSAccess,RequiresInternetConnectivity -DforkMode=always'
+
+# ETLE aliases
 alias etle='cd /home/poirel/src/etle'
 alias etle-build='etle && mcid'
 alias etle-test='etle && mvn clean install -Dtestng.excludedGroups=UnderDevelopment,Load'
 
 alias reveal-common='cd /home/poirel/src/reveal-common'
-alias reveal-common-build='reveal-common && mcid'
+alias reveal-public='cd /home/poirel/src/reveal-public'
 
-alias cb-integ='cd /home/poirel/src/research-and-development/carbon-black-connector/src'
+alias rose='cd /home/poirel/src/rose'
 
-alias quantum='cd /home/poirel/src/research-and-development/quantum-poc/ingest'
+alias oapi='cd /home/poirel/src/outbound-api'
+alias oapirun='oapi && java -jar $(find ./target -name "outbound-api-*-uberjar.jar" | grep -v sources) server ~/my-config/outbound-api-server-config.yml'
+alias oapidebug='oapi && java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -jar $(find ./target -name "outbound-api-*-uberjar.jar" | grep -v sources) server ~/my-config/outbound-api-server-config.yml'
 
 export PATH=$PATH:$HOME/.tmux
-
-export HADOOP_HOME=/home/poirel/src/hadoop-0.20.2-cdh3u5
-
-#export JAVA_OPTS="-Xms2048m -Xms4096m"
-#export MAVEN_OPTS="-Xms2048m -Xms4096m"
 
 #export JAVA_HOME="/usr/lib/jvm/java-7-openjdk-amd64/"
 export JAVA_HOME="/usr/lib/jvm/java-8-oracle/"
 export PATH=$JAVA_HOME/bin:$PATH
-
-# external sourced files
-if [ -f ~/reveal-presentation.sh ]; then
-    source ~/reveal-presentation.sh
-fi
 
 export GROOVY_HOME="/home/poirel/.gvm/groovy/2.3.5/"
 
@@ -302,3 +314,10 @@ export PATH=$PATH:"/home/poirel/src/reveal-common/util"
 
 export ORACLE_HOME=/usr/lib/oracle/12.1/client64
 export LD_LIBRARY_PATH=$ORACLE_HOME/lib
+
+alias diff=colordiff
+
+# RedOwl vagrant
+#alias ro-ansible='cd /home/poirel/src/ansible'
+#export VAGRANT_CWD="/home/poirel/src/ansible/vagrant_env/dev-standalone"
+

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-log_dir='/home/poirel/.reveal-common/log'
+log_dir='/home/poirel/.reveal-common/logs'
 # make the log directory if it doesn't exist
 mkdir -p $log_dir
 
@@ -15,14 +15,14 @@ tmux new-session -d -n 'running pipeline'
 tmux send-keys 'reveal-common' enter
 tmux send-keys 'git status' enter
 tmux splitw -v -p 40
-tmux send-keys 'reveal-common' enter
+tmux send-keys 'reveal-public' enter
 
 # window to tail public api logs
 tmux new-window -n 'streaming logs'
 tmux send-keys "cd $log_dir && touch $reveal_public_log && tailf -n 1 $reveal_public_log" enter
-tmux splitw -v -p 66
+tmux splitw -v -p 75
 tmux send-keys "cd $log_dir && touch $reveal_conversion_log && tailf -n 1 $reveal_conversion_log" enter
-tmux splitw -v -p 50
+tmux splitw -v -p 66
 tmux send-keys "cd $log_dir && touch $reveal_queue_worker_log && tailf -n 1 $reveal_queue_worker_log" enter
 
 # window to tail logstash logs

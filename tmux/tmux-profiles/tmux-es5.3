@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# main window running the pipeline
+tmux new-session -d -n 'running es and friends'
+tmux send-keys 'cd ~ && es5.3.2' enter
+tmux splitw -v -p 50
+tmux send-keys 'cd ~ && kibana' enter
+
+tmux -2 attach-session -d
