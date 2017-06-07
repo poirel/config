@@ -305,10 +305,6 @@ export PATH=$JAVA_HOME/bin:$PATH
 
 export GROOVY_HOME="/home/poirel/.gvm/groovy/2.3.5/"
 
-export NVM_DIR="/home/poirel/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-
-export PATH=$PATH:$NVM_DIR/current/bin
 
 export PATH=$PATH:"/home/poirel/src/reveal-common/util"
 
@@ -321,3 +317,7 @@ alias diff=colordiff
 #alias ro-ansible='cd /home/poirel/src/ansible'
 #export VAGRANT_CWD="/home/poirel/src/ansible/vagrant_env/dev-standalone"
 
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
