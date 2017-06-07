@@ -1,0 +1,22 @@
+#!/bin/sh
+
+BRANCH_NAME=`git symbolic-ref --short HEAD`
+WELL_FORMATTED_BRANCH_NAME="[a-zA-Z0-9]\{1,\}-[0-9]\{1,\}"
+if [ -n "$BRANCH_NAME" ]; then
+  # If no well-formatted prefix, just prepend the current branch
+  if ! grep -e "^$WELL_FORMATTED_BRANCH_NAME:" $1 >/dev/null; then
+    sed -i.bak -e "1s/^/$BRANCH_NAME: /" $1
+  else
+    # If there IS a well-formatted prefix already and it DOESN'T
+    # match the current branch, then also add the current branch
+    # into the commit message
+    if ! grep -e "^$BRANCH_NAME:" $1 >/dev/null; then
+      sed -i.bak -e "1s/^\($WELL_FORMATTED_BRANCH_NAME\):/\1 (On branch $BRANCH_NAME):/" $1
+    fi
+  fi
+fi
+
+echo >> "$1"
+
+SOB=$(git var GIT_AUTHOR_IDENT | sed -n 's/^\(.*>\).*$/Signed-off-by: \1/p')
+grep -qs "^$SOB" "$1" || echo "$SOB" >> "$1"
