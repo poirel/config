@@ -240,11 +240,11 @@ alias licecap='wine ~/.wine/drive_c/Program\ Files\ \(x86\)/LICEcap/licecap.exe'
 complete -C aws_completer aws
 
 # RedOwl
-export PATH=$HOME/.rbenv/bin:\
-$HOME/.rbenv/plugins/ruby-build/bin:\
-$HOME/src/ateam-code/src/python/scripts:\
-$PATH
-eval "$(rbenv init -)"
+#export PATH=$HOME/.rbenv/bin:\
+#$HOME/.rbenv/plugins/ruby-build/bin:\
+#$HOME/src/ateam-code/src/python/scripts:\
+#$PATH
+#eval "$(rbenv init -)"
 
 
 alias nifi-start='/home/poirel/.local/src/HDF-1.2.0.1-1/nifi/bin/nifi.sh start'
@@ -297,7 +297,7 @@ alias oapi='cd /home/poirel/src/outbound-api'
 alias oapirun='oapi && java -jar $(find ./target -name "outbound-api-*-uberjar.jar" | grep -v sources) server ~/my-config/outbound-api-server-config.yml'
 alias oapidebug='oapi && java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -jar $(find ./target -name "outbound-api-*-uberjar.jar" | grep -v sources) server ~/my-config/outbound-api-server-config.yml'
 
-export PATH=$PATH:$HOME/.tmux
+export PATH=$PATH:$HOME/.tmux-profiles
 
 #export JAVA_HOME="/usr/lib/jvm/java-7-openjdk-amd64/"
 export JAVA_HOME="/usr/lib/jvm/java-8-oracle/"
