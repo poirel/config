@@ -24,10 +24,12 @@ tmux splitw -v -p 75
 tmux send-keys "cd $log_dir && touch $reveal_conversion_log && tailf -n 1 $reveal_conversion_log" enter
 tmux splitw -v -p 66
 tmux send-keys "cd $log_dir && touch $reveal_queue_worker_log && tailf -n 1 $reveal_queue_worker_log" enter
-
-# window to tail logstash logs
-tmux new-window -n 'logstash log'
+tmux splitw -v -p 50
 tmux send-keys "cd $log_dir && touch $logstash_log && tailf -n 1 $logstash_log" enter
+
+# window to run Elasticsearch
+tmux new-window -n 'elasticsearch'
+tmux send-keys "cd" enter
 
 # set where we want to be on startup
 tmux select-window -t 0
