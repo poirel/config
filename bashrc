@@ -272,6 +272,7 @@ alias ro-schema-ensure='cd ~/src/reveal-common && java -jar $(find reveal-schema
 
 # MDS Aliases
 alias mds='cd /home/poirel/src/master-data-service'
+alias mdstest='mds && mvn clean install -Dtestng.excludedGroups=UnderDevelopment,RemoteHadoop,AWSAccess,RequiresInternetConnectivity -DforkMode=always'
 # 2.13.6
 alias mdsrun-2.13.6='mds && java -Xms256m -Xmx2048m -cp $(find reference-data-service/target -name "reference-data-service-*.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server ~/src/my-config/ro-config/mds-server-config_2.13.6.yml'
 alias mdsdebug-2.13.6='mds && java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Xms256m -Xmx2048m -XX:PermSize=512m -cp $(find reference-data-service/target -name "reference-data-service-*.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server ~/src/my-config/ro-config/mds-server-config_2.13.6.yml'
@@ -281,26 +282,25 @@ alias mdsdebug-2.15.1='mds && java -agentlib:jdwp=transport=dt_socket,server=y,s
 # 2.50.0
 alias mdsrun-2.50.0='mds && java -Xms256m -Xmx2048m -cp $(find reference-data-service/target -name "reference-data-service-*-uberjar.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server ~/src/my-config/ro-config/mds-server-config_2.50.0.yml'
 alias mdsdebug-2.50.0='mds && java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Xms256m -Xmx2048m -XX:PermSize=512m -cp $(find reference-data-service/target -name "reference-data-service-*-uberjar.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server ~/src/my-config/ro-config/mds-server-config_2.50.0.yml'
-alias mdstest-2.50.0='mds && mvn clean install -Dtestng.excludedGroups=UnderDevelopment,RemoteHadoop,AWSAccess,RequiresInternetConnectivity -DforkMode=always'
 # 2.50.1
 alias mdsrun-2.50.1='mds && java -Xms256m -Xmx2048m -cp $(find reference-data-service/target -name "reference-data-service-*-uberjar.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server ~/src/my-config/ro-config/mds-server-config_2.50.1.yml'
 alias mdsdebug-2.50.1='mds && java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Xms256m -Xmx2048m -XX:PermSize=512m -cp $(find reference-data-service/target -name "reference-data-service-*-uberjar.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server ~/src/my-config/ro-config/mds-server-config_2.50.1.yml'
-alias mdstest-2.50.1='mds && mvn clean install -Dtestng.excludedGroups=UnderDevelopment,RemoteHadoop,AWSAccess,RequiresInternetConnectivity -DforkMode=always'
 # 2.51.0
 alias mdsrun-2.51.0='mds && java -Xms256m -Xmx2048m -cp $(find reference-data-service/target -name "reference-data-service-*-uberjar.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server ~/src/my-config/ro-config/mds-server-config_2.51.0.yml'
 alias mdsdebug-2.51.0='mds && java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Xms256m -Xmx2048m -XX:PermSize=512m -cp $(find reference-data-service/target -name "reference-data-service-*-uberjar.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server ~/src/my-config/ro-config/mds-server-config_2.51.0.yml'
-alias mdstest-2.51.0='mds && mvn clean install -Dtestng.excludedGroups=UnderDevelopment,RemoteHadoop,AWSAccess,RequiresInternetConnectivity -DforkMode=always'
 # 2.60.0
 alias mdsrun-2.60.0='mds && java -Xms256m -Xmx2048m -cp $(find reference-data-service/target -name "reference-data-service-*-uberjar.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server ~/src/my-config/ro-config/mds-server-config_2.60.0.yml'
 alias mdsdebug-2.60.0='mds && java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Xms256m -Xmx2048m -XX:PermSize=512m -cp $(find reference-data-service/target -name "reference-data-service-*-uberjar.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server ~/src/my-config/ro-config/mds-server-config_2.60.0.yml'
-alias mdstest-2.60.0='mds && mvn clean install -Dtestng.excludedGroups=UnderDevelopment,RemoteHadoop,AWSAccess,RequiresInternetConnectivity -DforkMode=always'
+# 2.70.0
+alias mdsrun-2.70.0='mds && java -Xms256m -Xmx2048m -cp $(find reference-data-service/target -name "reference-data-service-*-uberjar.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server ~/src/my-config/ro-config/mds-server-config_2.70.0.yml'
+alias mdsdebug-2.70.0='mds && java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Xms256m -Xmx2048m -XX:PermSize=512m -cp $(find reference-data-service/target -name "reference-data-service-*-uberjar.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server ~/src/my-config/ro-config/mds-server-config_2.70.0.yml'
 
 alias reveal-common='cd /home/poirel/src/reveal-common'
 alias reveal-public='cd /home/poirel/src/reveal-public'
 
 # ROSE aliases
 alias rose='cd /home/poirel/src/rose'
-alias roserun='rose && java -jar $(find rose-service/target -name "rose-service-*-uberjar.jar") server '"${RO_CONFIG_DIR}/ro-rose_2.60.0.yml"
+alias roserun-2.70='rose && java -jar $(find rose-service/target -name "rose-service-*-uberjar.jar") server '"${RO_CONFIG_DIR}/ro-rose_2.70.0.yml"
 
 # Outbound API aliases
 alias oapi='cd /home/poirel/src/outbound-api'
