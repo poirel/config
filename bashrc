@@ -90,6 +90,13 @@ alias less='less -X'
 
 alias clipboard='xclip -sel clip'
 
+# curl aliases
+alias postjson='curl -H "Content-Type: application/json" -XPOST '
+alias postjsonl='curl -H "Content-Type: application/x-json-stream" -XPOST '
+#jwtcurl='curl -H"$(jwtheader)" -H"Content-Type:application/json"'
+#jwtgen='npm run --silent --prefix="/Users/Phil/src/ui/the-ui/server" jwtgen -- --cwd=$(pwd)'
+#jwtheader='echo "Authorization: Bearer $(jwtgen generate --algorithm ES512 --pemfile /Users/Phil/.devconfig/etc/jwt/jwt-private.pem)"'
+
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
@@ -110,8 +117,14 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
-function cd {
-    builtin cd "$@" && ls
+#function cd {
+#    builtin cd "$@" && ls
+#}
+
+function ro-version {
+  cd ${HOME}/src/manifests
+  git branch -a | grep "remotes/origin/release/" | xargs git grep -B1 -A3 "$@"
+  cd -
 }
 
 # don't overwrite a file when using > if the file exists
@@ -230,8 +243,7 @@ export PATH=$PATH:\
 "$HOME/.local/bin"
 
 export PYTHONPATH=$PYTHONPATH:\
-$HOME/src/master-data-service/misc/python:\
-$HOME/src/research-and-development/raytheon-publish/python
+$HOME/src/master-data-service/misc/python
 
 
 alias licecap='wine ~/.wine/drive_c/Program\ Files\ \(x86\)/LICEcap/licecap.exe'
@@ -240,27 +252,66 @@ alias licecap='wine ~/.wine/drive_c/Program\ Files\ \(x86\)/LICEcap/licecap.exe'
 complete -C aws_completer aws
 
 # RedOwl
+
+# pull all "master" branches of Forcepoint repos
+function master-forcepoint {
+  other_repos=(
+    ansible
+    the-ui
+    manifests
+  )
+  for repo in ${other_repos[@]}; do
+    echo Pulling ${repo} ...
+    cd ${HOME}/src/${repo} && git checkout master && git pull
+  done
+
+  # in required build order
+  java_repos=(
+    reveal-public
+    redowl-kafka-libs
+    rose
+    reveal-common
+    master-data-service
+#    ueba-publisher-service
+#    outbound-api
+#    redowl-minigator
+  )
+  for repo in ${java_repos[@]}; do
+    echo Pulling ${repo} ...
+    cd ${HOME}/src/${repo} && git checkout master && git pull && mvn clean install -DskipTests
+  done
+
+  cd ~ && pwd
+}
+
+
+
+# --- UI stuff ---
 #export PATH=$HOME/.rbenv/bin:\
 #$HOME/.rbenv/plugins/ruby-build/bin:\
 #$HOME/src/ateam-code/src/python/scripts:\
 #$PATH
 #eval "$(rbenv init -)"
 
+export RO_UI_DIR='/home/poirel/src/the-ui'
+
+alias gitmaster='git checkout master && git pull'
+
+export RO_LOGSTASH='/home/poirel/.local/src/logstash-5.4.1/bin/logstash'
+
 
 alias nifi-start='/home/poirel/.local/src/HDF-1.2.0.1-1/nifi/bin/nifi.sh start'
 alias nifi-stop='/home/poirel/.local/src/HDF-1.2.0.1-1/nifi/bin/nifi.sh stop'
 alias nifi-log='tail -f /home/poirel/.local/src/HDF-1.2.0.1-1/nifi/logs/nifi-app.log'
 
-# Dynamically sets up output directories for Elasticsearch, when run from the command line.
-# See the appropriate elasticsearch.yml file for details. Also used by ro-schema-ensure below.
-export ELASTICSEARCH_CLUSTER_NAME="clp"
-
 export RO_CONFIG_DIR='/home/poirel/src/my-config/ro-config'
 alias ro-config="cd ${RO_CONFIG_DIR}"
 
 # Reveal sourcecode aliases
-alias mcid='mvn clean install -DskipTests -Pdocs'
-alias mcidd='mvn clean install -DskipTests -Dcheckstyle.skip=true -Pdocs'
+export PATH=${PATH}:${HOME}/src/ansible/devutils
+
+alias mcid='mvn clean install -DskipTests'
+alias mcidd='mvn clean install -Dmaven.test.skip -Dcheckstyle.skip=true'
 alias mcit='mvn --update-snapshots -DforkCount=1 -DreuseForks=false -Dtestng.excludedGroups=UnderDevelopment,RemoteHadoop,AWSAccess,RequiresInternetConnectivity clean install'
 #alias mcit='mvn clean install -Dtestng.excludedGroups=UnderDevelopment,RemoteHadoop,AWSAccess,RequiresInternetConnectivity'
 alias old-mcit='mvn clean install -DforkMode=always -Dtestng.excludedGroups=UnderDevelopment,RemoteHadoop,AWSAccess,RequiresInternetConnectivity'
@@ -268,7 +319,7 @@ alias old-mcit='mvn clean install -DforkMode=always -Dtestng.excludedGroups=Unde
 alias the-ui='cd /home/poirel/src/the-ui'
 
 # ro-schema
-alias ro-schema-ensure='cd ~/src/reveal-common && java -jar $(find reveal-schema-cli/target -name "reveal-schema-cli-*-uberjar.jar") ensure --cluster ${ELASTICSEARCH_CLUSTER_NAME} --host localhost'
+alias ro-schema-ensure='cd ~/src/reveal-common && java -jar $(find reveal-schema-cli/target -name "reveal-schema-cli-*-uberjar.jar") ensure --cluster clp --host localhost'
 
 # MDS Aliases
 alias mds='cd /home/poirel/src/master-data-service'
@@ -294,18 +345,33 @@ alias mdsdebug-2.60.0='mds && java -agentlib:jdwp=transport=dt_socket,server=y,s
 # 2.70.0
 alias mdsrun-2.70.0='mds && java -Xms256m -Xmx2048m -cp $(find reference-data-service/target -name "reference-data-service-*-uberjar.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server ~/src/my-config/ro-config/mds-server-config_2.70.0.yml'
 alias mdsdebug-2.70.0='mds && java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Xms256m -Xmx2048m -XX:PermSize=512m -cp $(find reference-data-service/target -name "reference-data-service-*-uberjar.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server ~/src/my-config/ro-config/mds-server-config_2.70.0.yml'
+# 2.71.0
+alias mdsrun-2.71.0='mds && java -Xms256m -Xmx2048m -cp $(find reference-data-service/target -name "reference-data-service-*-uberjar.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server ~/src/my-config/ro-config/mds-server-config_2.71.0.yml'
+alias mdsdebug-2.71.0='mds && java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Xms256m -Xmx2048m -XX:PermSize=512m -cp $(find reference-data-service/target -name "reference-data-service-*-uberjar.jar" | grep -v sources) com.redowlanalytics.reference.ReferenceDataService server ~/src/my-config/ro-config/mds-server-config_2.71.0.yml'
 
 alias reveal-common='cd /home/poirel/src/reveal-common'
 alias reveal-public='cd /home/poirel/src/reveal-public'
 
 # ROSE aliases
 alias rose='cd /home/poirel/src/rose'
+# 2.70
 alias roserun-2.70='rose && java -jar $(find rose-service/target -name "rose-service-*-uberjar.jar") server '"${RO_CONFIG_DIR}/ro-rose_2.70.0.yml"
+alias rosedebug-2.70='rose && java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -jar $(find rose-service/target -name "rose-service-*-uberjar.jar") server '"${RO_CONFIG_DIR}/ro-rose_2.70.0.yml"
+# 2.71
+alias roserun-2.71='rose && java -jar $(find rose-service/target -name "rose-service-*-uberjar.jar") server '"${RO_CONFIG_DIR}/ro-rose_2.71.0.yml"
+alias rosedebug-2.71='rose && java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -jar $(find rose-service/target -name "rose-service-*-uberjar.jar") server '"${RO_CONFIG_DIR}/ro-rose_2.71.0.yml"
 
 # Outbound API aliases
 alias oapi='cd /home/poirel/src/outbound-api'
-alias oapirun='oapi && java -jar $(find ./target -name "outbound-api-*-uberjar.jar" | grep -v sources) server ~/src/my-config/ro-config/outbound-api-server-config_2.60.0.yml'
-alias oapidebug='oapi && java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -jar $(find ./target -name "outbound-api-*-uberjar.jar" | grep -v sources) server ~/src/my-config/ro-config/outbound-api-server-config_2.60.0.yml'
+# 2.60
+alias oapirun-2.60.0='oapi && java -jar $(find ./target -name "outbound-api-*-uberjar.jar" | grep -v sources) server ~/src/my-config/ro-config/outbound-api-server-config_2.60.0.yml'
+alias oapidebug-2.60.0='oapi && java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -jar $(find ./target -name "outbound-api-*-uberjar.jar" | grep -v sources) server ~/src/my-config/ro-config/outbound-api-server-config_2.60.0.yml'
+# 2.71
+alias oapirun-2.71.0='oapi && java -jar $(find ./target -name "outbound-api-*-uberjar.jar" | grep -v sources) server ~/src/my-config/ro-config/outbound-api-server-config_2.71.0.yml'
+alias oapidebug-2.71.0='oapi && java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -jar $(find ./target -name "outbound-api-*-uberjar.jar" | grep -v sources) server ~/src/my-config/ro-config/outbound-api-server-config_2.71.0.yml'
+
+# redowl-kafka-libs aliases
+alias redowl-kafka-libs='cd /home/poirel/src/redowl-kafka-libs'
 
 export PATH=$PATH:$HOME/.tmux-profiles
 
@@ -316,7 +382,8 @@ export PATH=$JAVA_HOME/bin:$PATH
 export GROOVY_HOME="/home/poirel/.gvm/groovy/2.3.5/"
 
 
-export PATH=$PATH:"/home/poirel/src/reveal-common/util"
+export PATH=$PATH:$HOME/src/reveal-common/util:\
+$HOME/src/rose/rose-service/src/main/python
 
 export ORACLE_HOME=/usr/lib/oracle/12.1/client64
 export LD_LIBRARY_PATH=$ORACLE_HOME/lib
@@ -331,3 +398,15 @@ alias diff=colordiff
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Set the tab title like so from the command line:
+#     $ tab-title "My Tab"
+function tab-title {
+  if [ -z "$1" ]
+  then
+    title=${PWD##*/} # current directory
+  else
+    title=$1 # first param
+  fi
+  echo -n -e "\033]0;$title\007"
+}
