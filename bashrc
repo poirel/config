@@ -240,7 +240,9 @@ else \
 fi)'
 
 export PATH=$PATH:\
-"$HOME/.local/bin"
+"$HOME/.local/bin":\
+"$HOME/src/manifests/util":\
+"$HOME/src/gen-utils/bin"
 
 export PYTHONPATH=$PYTHONPATH:\
 $HOME/src/master-data-service/misc/python
