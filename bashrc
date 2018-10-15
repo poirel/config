@@ -272,11 +272,11 @@ function master-forcepoint {
     reveal-public
     redowl-kafka-libs
     rose
+#    redowl-minigator
     reveal-common
     master-data-service
 #    ueba-publisher-service
 #    outbound-api
-#    redowl-minigator
   )
   for repo in ${java_repos[@]}; do
     echo Pulling ${repo} ...
