@@ -261,6 +261,7 @@ function master-forcepoint {
     ansible
     the-ui
     manifests
+    gen-utils
   )
   for repo in ${other_repos[@]}; do
     echo Pulling ${repo} ...
@@ -275,7 +276,7 @@ function master-forcepoint {
 #    redowl-minigator
     reveal-common
     master-data-service
-#    ueba-publisher-service
+    ueba-publisher-service
 #    outbound-api
   )
   for repo in ${java_repos[@]}; do
@@ -412,3 +413,4 @@ function tab-title {
   fi
   echo -n -e "\033]0;$title\007"
 }
+source <(kubectl completion bash)
