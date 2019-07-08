@@ -242,10 +242,15 @@ fi)'
 export PATH=$PATH:\
 "$HOME/.local/bin":\
 "$HOME/src/manifests/util":\
-"$HOME/src/gen-utils/bin"
+"$HOME/src/gen-utils/bin":\
+"$HOME/src/redtail":\
+"$HOME/src/fds-utils/src/python"
+
 
 export PYTHONPATH=$PYTHONPATH:\
-$HOME/src/master-data-service/misc/python
+$HOME/src/master-data-service/misc/python:\
+$HOME/src/gen-utils:\
+$HOME/src/gen-utils/bin:\
 
 
 alias licecap='wine ~/.wine/drive_c/Program\ Files\ \(x86\)/LICEcap/licecap.exe'
@@ -256,7 +261,7 @@ complete -C aws_completer aws
 # RedOwl
 
 # pull all "master" branches of Forcepoint repos
-function master-forcepoint {
+function fba-get-master {
   other_repos=(
     ansible
     the-ui
@@ -281,7 +286,27 @@ function master-forcepoint {
   )
   for repo in ${java_repos[@]}; do
     echo Pulling ${repo} ...
-    cd ${HOME}/src/${repo} && git checkout master && git pull && mvn clean install -DskipTests
+    cd ${HOME}/src/${repo} && git checkout master && git pull
+  done
+
+  cd ~ && pwd
+}
+
+function fba-build {
+  # in required build order
+  java_repos=(
+    reveal-public
+    redowl-kafka-libs
+    rose
+#    redowl-minigator
+    reveal-common
+    master-data-service
+    ueba-publisher-service
+#    outbound-api
+  )
+  for repo in ${java_repos[@]}; do
+    echo Pulling ${repo} ...
+    cd ${HOME}/src/${repo} && mvn clean install -DskipTests
   done
 
   cd ~ && pwd
@@ -376,6 +401,10 @@ alias oapidebug-2.71.0='oapi && java -agentlib:jdwp=transport=dt_socket,server=y
 # redowl-kafka-libs aliases
 alias redowl-kafka-libs='cd /home/poirel/src/redowl-kafka-libs'
 
+
+# runstack variants
+alias runstack-no-ingest='runstack -s ro-api -s reveal-public-api-service -s reveal-content-service -s reveal-conversion-service -s reveal-queue-worker-service -s ueba-publisher-service services'
+
 export PATH=$PATH:$HOME/.tmux-profiles
 
 #export JAVA_HOME="/usr/lib/jvm/java-7-openjdk-amd64/"
@@ -414,3 +443,5 @@ function tab-title {
   echo -n -e "\033]0;$title\007"
 }
 source <(kubectl completion bash)
+
+source $HOME/.bashrc.d/ueba-jwt-generator.sh
